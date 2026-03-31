@@ -2,7 +2,7 @@ pragma solidity ^0.8.19;
 
 contract EmergencyAccess {
 
-    // ── Data structures ────────────────────────────────────────────
+    
     struct Patient {
         bool registered;
         bool emergencyAccessEnabled;
@@ -33,7 +33,7 @@ contract EmergencyAccess {
         bool flaggedForEthicsReview;
     }
 
-    // ── State ──────────────────────────────────────────────────────
+    
     mapping(address => Patient)  public patients;
     mapping(address => Doctor)   public doctors;
     mapping(address => Hospital) public hospitals;
@@ -42,7 +42,7 @@ contract EmergencyAccess {
     uint256 public constant ACCESS_DURATION    = 4 hours;
     uint256 public constant JUSTIFICATION_WINDOW = 24 hours;
 
-    // ── Events ─────────────────────────────────────────────────────
+    
     event HospitalRegistered(address hospital, string name);
     event DoctorAttested(address doctor, address hospital, string role);
     event PatientRegistered(address patient);
@@ -52,13 +52,13 @@ contract EmergencyAccess {
     event JustificationSubmitted(uint256 logIndex, address doctor);
     event EthicsReviewTriggered(uint256 logIndex);
 
-    // ── Hospital registration ──────────────────────────────────────
+    
     function registerHospital(string calldata name) external {
         hospitals[msg.sender] = Hospital({ verified: true, name: name });
         emit HospitalRegistered(msg.sender, name);
     }
 
-    // ── Doctor attestation ─────────────────────────────────────────
+    
     function attestDoctor(address doctor, string calldata role) external {
         require(hospitals[msg.sender].verified, "Not a verified hospital");
         doctors[doctor] = Doctor({
@@ -69,7 +69,7 @@ contract EmergencyAccess {
         emit DoctorAttested(doctor, msg.sender, role);
     }
 
-    // ── Patient registration ───────────────────────────────────────
+    
     function registerPatient(
         bytes32 emergencyDEK,
         address surrogate,
@@ -87,7 +87,7 @@ contract EmergencyAccess {
         emit PatientRegistered(msg.sender);
     }
 
-    // ── Core: Emergency Access (5 ABAC checks) ────────────────────
+    
     function requestEmergencyAccess(
         address patientAddr,
         string calldata emergencyType
@@ -136,7 +136,7 @@ contract EmergencyAccess {
         return pat.emergencyDEK;
     }
 
-    // ── Post-access justification ──────────────────────────────────
+    
     function submitJustification(uint256 logIndex) external {
         AccessLog storage log = accessLogs[logIndex];
         require(log.doctor == msg.sender, "Not the accessing doctor");
