@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # Sample Hardhat 3 Beta Project (`mocha` and `ethers`)
 
 This project showcases a Hardhat 3 Beta project using `mocha` for tests and the `ethers` library for Ethereum interactions.
@@ -75,4 +75,4 @@ npx hardhat test
 
 ## Paper
 Johns Hopkins University, Spring 2026
->>>>>>> 13d39653f4ec0d28e2659e471852a3aa1696ddb3
+
