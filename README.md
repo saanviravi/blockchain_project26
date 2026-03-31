@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Sample Hardhat 3 Beta Project (`mocha` and `ethers`)
 
 This project showcases a Hardhat 3 Beta project using `mocha` for tests and the `ethers` library for Ethereum interactions.
@@ -55,3 +56,23 @@ After setting the variable, you can run the deployment with the Sepolia network:
 ```shell
 npx hardhat ignition deploy --network sepolia ignition/modules/Counter.ts
 ```
+=======
+# Blockchain-Based Emergency Healthcare Access Control
+
+Smart contract implementation of ABAC + Break-Glass emergency protocol on Polygon.
+
+## Stack
+- Solidity 0.8.28
+- Hardhat 3.2.0
+- TypeScript / Mocha / Ethers.js
+
+## Run tests
+nvm use 22
+npx hardhat test
+
+## Results
+8/8 tests passing — 188,611 gas units per emergency access transaction.
+
+## Paper
+Johns Hopkins University, Spring 2026
+>>>>>>> 13d39653f4ec0d28e2659e471852a3aa1696ddb3
