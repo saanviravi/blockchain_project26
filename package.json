@@ -3,7 +3,13 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "npx hardhat test",
+    "compile": "npx hardhat compile",
+    "deploy": "node scripts/deploy.js",
+    "demo": "node demo.js",
+    "generate-dek": "node generate-dek.js",
+    "node": "npx hardhat node",
+    "client": "cd client && npm start"
   },
   "keywords": [],
   "author": "",
@@ -12,7 +18,7 @@
   "devDependencies": {
     "@nomicfoundation/hardhat-ethers": "^4.0.6",
     "@nomicfoundation/hardhat-ignition": "^3.1.0",
-    "@nomicfoundation/hardhat-toolbox": "^7.0.0",
+    "@nomicfoundation/hardhat-toolbox": "^6.1.2",
     "@nomicfoundation/hardhat-toolbox-mocha-ethers": "^3.0.3",
     "@types/chai": "^5.2.3",
     "@types/chai-as-promised": "^8.0.2",
