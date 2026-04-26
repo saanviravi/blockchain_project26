@@ -13,20 +13,23 @@ export declare namespace EmergencyAccess {
     }
 
   export interface EmergencyAccessInterface extends Interface {
-    getFunction(nameOrSignature: "ACCESS_DURATION" | "JUSTIFICATION_WINDOW" | "accessLogs" | "attestDoctor" | "doctors" | "getAccessLog" | "getLogCount" | "hospitals" | "patients" | "registerHospital" | "registerPatient" | "requestEmergencyAccess" | "submitJustification" | "triggerEthicsReview"): FunctionFragment;
+    getFunction(nameOrSignature: "ACCESS_DURATION" | "JUSTIFICATION_WINDOW" | "accessLogs" | "admin" | "attestDoctor" | "disableEmergencyAccess" | "doctors" | "getAccessLog" | "getLogCount" | "hospitals" | "logCount" | "patients" | "registerHospital" | "registerPatient" | "requestEmergencyAccess" | "submitJustification" | "triggerEthicsReview"): FunctionFragment;
 
     getEvent(nameOrSignatureOrTopic: "DoctorAttested" | "EmergencyAccessDenied" | "EmergencyAccessGranted" | "EthicsReviewTriggered" | "HospitalRegistered" | "JustificationSubmitted" | "PatientRegistered"): EventFragment;
 
     encodeFunctionData(functionFragment: 'ACCESS_DURATION', values?: undefined): string;
 encodeFunctionData(functionFragment: 'JUSTIFICATION_WINDOW', values?: undefined): string;
 encodeFunctionData(functionFragment: 'accessLogs', values: [BigNumberish]): string;
+encodeFunctionData(functionFragment: 'admin', values?: undefined): string;
 encodeFunctionData(functionFragment: 'attestDoctor', values: [AddressLike, string]): string;
+encodeFunctionData(functionFragment: 'disableEmergencyAccess', values?: undefined): string;
 encodeFunctionData(functionFragment: 'doctors', values: [AddressLike]): string;
 encodeFunctionData(functionFragment: 'getAccessLog', values: [BigNumberish]): string;
 encodeFunctionData(functionFragment: 'getLogCount', values?: undefined): string;
 encodeFunctionData(functionFragment: 'hospitals', values: [AddressLike]): string;
+encodeFunctionData(functionFragment: 'logCount', values?: undefined): string;
 encodeFunctionData(functionFragment: 'patients', values: [AddressLike]): string;
-encodeFunctionData(functionFragment: 'registerHospital', values: [string]): string;
+encodeFunctionData(functionFragment: 'registerHospital', values: [AddressLike, string]): string;
 encodeFunctionData(functionFragment: 'registerPatient', values: [BytesLike, AddressLike, string[], string[]]): string;
 encodeFunctionData(functionFragment: 'requestEmergencyAccess', values: [AddressLike, string]): string;
 encodeFunctionData(functionFragment: 'submitJustification', values: [BigNumberish]): string;
@@ -35,11 +38,14 @@ encodeFunctionData(functionFragment: 'triggerEthicsReview', values: [BigNumberis
     decodeFunctionResult(functionFragment: 'ACCESS_DURATION', data: BytesLike): Result;
 decodeFunctionResult(functionFragment: 'JUSTIFICATION_WINDOW', data: BytesLike): Result;
 decodeFunctionResult(functionFragment: 'accessLogs', data: BytesLike): Result;
+decodeFunctionResult(functionFragment: 'admin', data: BytesLike): Result;
 decodeFunctionResult(functionFragment: 'attestDoctor', data: BytesLike): Result;
+decodeFunctionResult(functionFragment: 'disableEmergencyAccess', data: BytesLike): Result;
 decodeFunctionResult(functionFragment: 'doctors', data: BytesLike): Result;
 decodeFunctionResult(functionFragment: 'getAccessLog', data: BytesLike): Result;
 decodeFunctionResult(functionFragment: 'getLogCount', data: BytesLike): Result;
 decodeFunctionResult(functionFragment: 'hospitals', data: BytesLike): Result;
+decodeFunctionResult(functionFragment: 'logCount', data: BytesLike): Result;
 decodeFunctionResult(functionFragment: 'patients', data: BytesLike): Result;
 decodeFunctionResult(functionFragment: 'registerHospital', data: BytesLike): Result;
 decodeFunctionResult(functionFragment: 'registerPatient', data: BytesLike): Result;
@@ -62,9 +68,9 @@ decodeFunctionResult(functionFragment: 'triggerEthicsReview', data: BytesLike): 
   
 
     export namespace EmergencyAccessDeniedEvent {
-      export type InputTuple = [doctor: AddressLike, patient: AddressLike, reason: string];
-      export type OutputTuple = [doctor: string, patient: string, reason: string];
-      export interface OutputObject {doctor: string, patient: string, reason: string };
+      export type InputTuple = [requester: AddressLike, patient: AddressLike, reason: string, timestamp: BigNumberish];
+      export type OutputTuple = [requester: string, patient: string, reason: string, timestamp: bigint];
+      export interface OutputObject {requester: string, patient: string, reason: string, timestamp: bigint };
       export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>
       export type Filter = TypedDeferredTopicFilter<Event>
       export type Log = TypedEventLog<Event>
@@ -74,9 +80,9 @@ decodeFunctionResult(functionFragment: 'triggerEthicsReview', data: BytesLike): 
   
 
     export namespace EmergencyAccessGrantedEvent {
-      export type InputTuple = [doctor: AddressLike, patient: AddressLike, emergencyType: string, expiresAt: BigNumberish];
-      export type OutputTuple = [doctor: string, patient: string, emergencyType: string, expiresAt: bigint];
-      export interface OutputObject {doctor: string, patient: string, emergencyType: string, expiresAt: bigint };
+      export type InputTuple = [doctor: AddressLike, patient: AddressLike, emergencyType: string, logIndex: BigNumberish, expiresAt: BigNumberish];
+      export type OutputTuple = [doctor: string, patient: string, emergencyType: string, logIndex: bigint, expiresAt: bigint];
+      export interface OutputObject {doctor: string, patient: string, emergencyType: string, logIndex: bigint, expiresAt: bigint };
       export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>
       export type Filter = TypedDeferredTopicFilter<Event>
       export type Log = TypedEventLog<Event>
@@ -86,9 +92,9 @@ decodeFunctionResult(functionFragment: 'triggerEthicsReview', data: BytesLike): 
   
 
     export namespace EthicsReviewTriggeredEvent {
-      export type InputTuple = [logIndex: BigNumberish];
-      export type OutputTuple = [logIndex: bigint];
-      export interface OutputObject {logIndex: bigint };
+      export type InputTuple = [logIndex: BigNumberish, patient: AddressLike];
+      export type OutputTuple = [logIndex: bigint, patient: string];
+      export interface OutputObject {logIndex: bigint, patient: string };
       export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>
       export type Filter = TypedDeferredTopicFilter<Event>
       export type Log = TypedEventLog<Event>
@@ -98,9 +104,9 @@ decodeFunctionResult(functionFragment: 'triggerEthicsReview', data: BytesLike): 
   
 
     export namespace HospitalRegisteredEvent {
-      export type InputTuple = [hospital: AddressLike, name: string];
-      export type OutputTuple = [hospital: string, name: string];
-      export interface OutputObject {hospital: string, name: string };
+      export type InputTuple = [hospitalAddr: AddressLike, name: string];
+      export type OutputTuple = [hospitalAddr: string, name: string];
+      export interface OutputObject {hospitalAddr: string, name: string };
       export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>
       export type Filter = TypedDeferredTopicFilter<Event>
       export type Log = TypedEventLog<Event>
@@ -191,8 +197,24 @@ decodeFunctionResult(functionFragment: 'triggerEthicsReview', data: BytesLike): 
     
 
     
+    admin: TypedContractMethod<
+      [],
+      [string],
+      'view'
+    >
+    
+
+    
     attestDoctor: TypedContractMethod<
       [doctor: AddressLike, role: string, ],
+      [void],
+      'nonpayable'
+    >
+    
+
+    
+    disableEmergencyAccess: TypedContractMethod<
+      [],
       [void],
       'nonpayable'
     >
@@ -231,6 +253,14 @@ decodeFunctionResult(functionFragment: 'triggerEthicsReview', data: BytesLike): 
     
 
     
+    logCount: TypedContractMethod<
+      [],
+      [bigint],
+      'view'
+    >
+    
+
+    
     patients: TypedContractMethod<
       [arg0: AddressLike, ],
       [[boolean, boolean, string, string] & {registered: boolean, emergencyAccessEnabled: boolean, emergencyDEK: string, surrogateContact: string }],
@@ -240,7 +270,7 @@ decodeFunctionResult(functionFragment: 'triggerEthicsReview', data: BytesLike): 
 
     
     registerHospital: TypedContractMethod<
-      [name: string, ],
+      [hospitalAddr: AddressLike, name: string, ],
       [void],
       'nonpayable'
     >
@@ -256,8 +286,8 @@ decodeFunctionResult(functionFragment: 'triggerEthicsReview', data: BytesLike): 
 
     
     requestEmergencyAccess: TypedContractMethod<
-      [patientAddr: AddressLike, emergencyType: string, ],
-      [string],
+      [patient: AddressLike, emergencyType: string, ],
+      [[boolean, bigint, bigint] & {accessGranted: boolean, logIndex: bigint, expiresAt: bigint }],
       'nonpayable'
     >
     
@@ -296,8 +326,18 @@ getFunction(nameOrSignature: 'accessLogs'): TypedContractMethod<
       [[string, string, string, bigint, bigint, boolean, boolean] & {doctor: string, patient: string, emergencyType: string, timestamp: bigint, expiresAt: bigint, justificationSubmitted: boolean, flaggedForEthicsReview: boolean }],
       'view'
     >;
+getFunction(nameOrSignature: 'admin'): TypedContractMethod<
+      [],
+      [string],
+      'view'
+    >;
 getFunction(nameOrSignature: 'attestDoctor'): TypedContractMethod<
       [doctor: AddressLike, role: string, ],
+      [void],
+      'nonpayable'
+    >;
+getFunction(nameOrSignature: 'disableEmergencyAccess'): TypedContractMethod<
+      [],
       [void],
       'nonpayable'
     >;
@@ -321,13 +361,18 @@ getFunction(nameOrSignature: 'hospitals'): TypedContractMethod<
       [[boolean, string] & {verified: boolean, name: string }],
       'view'
     >;
+getFunction(nameOrSignature: 'logCount'): TypedContractMethod<
+      [],
+      [bigint],
+      'view'
+    >;
 getFunction(nameOrSignature: 'patients'): TypedContractMethod<
       [arg0: AddressLike, ],
       [[boolean, boolean, string, string] & {registered: boolean, emergencyAccessEnabled: boolean, emergencyDEK: string, surrogateContact: string }],
       'view'
     >;
 getFunction(nameOrSignature: 'registerHospital'): TypedContractMethod<
-      [name: string, ],
+      [hospitalAddr: AddressLike, name: string, ],
       [void],
       'nonpayable'
     >;
@@ -337,8 +382,8 @@ getFunction(nameOrSignature: 'registerPatient'): TypedContractMethod<
       'nonpayable'
     >;
 getFunction(nameOrSignature: 'requestEmergencyAccess'): TypedContractMethod<
-      [patientAddr: AddressLike, emergencyType: string, ],
-      [string],
+      [patient: AddressLike, emergencyType: string, ],
+      [[boolean, bigint, bigint] & {accessGranted: boolean, logIndex: bigint, expiresAt: bigint }],
       'nonpayable'
     >;
 getFunction(nameOrSignature: 'submitJustification'): TypedContractMethod<
@@ -366,15 +411,15 @@ getEvent(key: 'PatientRegistered'): TypedContractEvent<PatientRegisteredEvent.In
       DoctorAttested: TypedContractEvent<DoctorAttestedEvent.InputTuple, DoctorAttestedEvent.OutputTuple, DoctorAttestedEvent.OutputObject>;
     
 
-      'EmergencyAccessDenied(address,address,string)': TypedContractEvent<EmergencyAccessDeniedEvent.InputTuple, EmergencyAccessDeniedEvent.OutputTuple, EmergencyAccessDeniedEvent.OutputObject>;
+      'EmergencyAccessDenied(address,address,string,uint256)': TypedContractEvent<EmergencyAccessDeniedEvent.InputTuple, EmergencyAccessDeniedEvent.OutputTuple, EmergencyAccessDeniedEvent.OutputObject>;
       EmergencyAccessDenied: TypedContractEvent<EmergencyAccessDeniedEvent.InputTuple, EmergencyAccessDeniedEvent.OutputTuple, EmergencyAccessDeniedEvent.OutputObject>;
     
 
-      'EmergencyAccessGranted(address,address,string,uint256)': TypedContractEvent<EmergencyAccessGrantedEvent.InputTuple, EmergencyAccessGrantedEvent.OutputTuple, EmergencyAccessGrantedEvent.OutputObject>;
+      'EmergencyAccessGranted(address,address,string,uint256,uint256)': TypedContractEvent<EmergencyAccessGrantedEvent.InputTuple, EmergencyAccessGrantedEvent.OutputTuple, EmergencyAccessGrantedEvent.OutputObject>;
       EmergencyAccessGranted: TypedContractEvent<EmergencyAccessGrantedEvent.InputTuple, EmergencyAccessGrantedEvent.OutputTuple, EmergencyAccessGrantedEvent.OutputObject>;
     
 
-      'EthicsReviewTriggered(uint256)': TypedContractEvent<EthicsReviewTriggeredEvent.InputTuple, EthicsReviewTriggeredEvent.OutputTuple, EthicsReviewTriggeredEvent.OutputObject>;
+      'EthicsReviewTriggered(uint256,address)': TypedContractEvent<EthicsReviewTriggeredEvent.InputTuple, EthicsReviewTriggeredEvent.OutputTuple, EthicsReviewTriggeredEvent.OutputObject>;
       EthicsReviewTriggered: TypedContractEvent<EthicsReviewTriggeredEvent.InputTuple, EthicsReviewTriggeredEvent.OutputTuple, EthicsReviewTriggeredEvent.OutputObject>;
     
 

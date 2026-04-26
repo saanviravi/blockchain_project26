@@ -80,17 +80,11 @@ describe("EmergencyAccess — ABAC + Break-Glass Protocol", function () {
   });
 
   it("TC3: ABAC-2 — rejects doctor with unauthorized role", async () => {
-    // Admin registers a second hospital, which attests attacker as ADMIN role
     const network = await hre.network.connect();
     const ethers = network.ethers;
-    const [, , , , , , , secondHospital] = await ethers.getSigners();
-    await contract.connect(admin).registerHospital(
-      secondHospital.address,
-      "Second Hospital"
-    );
-    await contract
-      .connect(secondHospital)
-      .attestDoctor(attacker.address, "ADMIN");
+
+    // Hospital attests attacker with an unauthorized role
+    await contract.connect(hospital).attestDoctor(attacker.address, "ADMIN");
 
     await expect(
       contract.connect(attacker).requestEmergencyAccess(patient.address, "cardiac")
